@@ -9,6 +9,20 @@ path_types = Optional[Union[str, Iterable[str]]]
 
 
 class DependencyGraph(object):
+    """Build the dependency graph object.
+
+    Constructor examines ``self.filename`` Python script's dependencies in
+    order to build the dependency digraph.
+
+    :param filename: path to Python script to analyze.
+    :type filename: str
+    :param search_paths: optional search paths.
+    :type search_paths: path_types
+    :raises: FileNotFoundError
+    :ivar root: initial value: filename.
+    :type root: str
+    """
+
     """Dependency graph object.
 
     Class/Structure containing relevant information for building the
@@ -22,17 +36,6 @@ class DependencyGraph(object):
     """
 
     def __init__(self, filename: str, search_paths: path_types = None):
-        """Build the dependency graph object.
-
-        Constructor examines 'filename' Python script's dependencies in order
-        to build the dependency digraph.
-
-        :param filename: path to Python script to analyze.
-        :type filename: str
-        :param search_paths: optional search paths.
-        :type search_paths: path_types
-        :raises: FileNotFoundError
-        """
         if filename.startswith("external:"):
             self.root: str = filename.split(":", 1)[-1]
             self.root_filename: str = self.root
@@ -80,10 +83,11 @@ class DependencyGraph(object):
     def inspect_module_names(self) -> Set[str]:
         """Get imported modules.
 
-        Examines 'filename' in search of imported packages and returns a set
-        of found module names.
+        Examines ``self.filename`` in search of imported packages and returns
+        a set of found module names.
 
-        :return: Set[str] -- set of imported module names.
+        :return: Set of imported module names.
+        :rtype: Set[str]
         """
         modules = []
         pattern_1 = r"import\s+(?P<module>\w+)"
@@ -125,8 +129,8 @@ class DependencyGraph(object):
         Examines the found module names from 'inspect_module_names' and
         returns a set of paths where those modules are defined.
 
-        :return: set of paths to files/packages where imported modules are
-        defined.
+        :returns: set of file/package paths where imported modules are defined.
+        :rtype: Set[str]
         """
         paths = []
         for module in self.module_names:
@@ -151,7 +155,8 @@ class DependencyGraph(object):
         Generates a set of DependencyGraph objects of the found modules'
         paths from 'get_module_paths'.
 
-        :return: deps
+        :returns: Set of dependencies as DependencyGraph objects.
+        :rtype: Set["DependencyGraph"]
         """
         deps = []
         for path in self.module_paths:
@@ -169,17 +174,11 @@ class DependencyGraph(object):
     def is_package(abs_path: str) -> bool:
         """Get True if 'abs_path' is package directory, else False.
 
-        :param abs_path:
-        :return:
-        """
-        """Check if a path is a Python package.
-
-        Returns True if 'abs_path' is package directory, else False.
-
         :param abs_path: path to the potential package directory.
-        :return: True if 'abs_path' is package directory, else False.
+        :type abs_path: str
+        :return: True if ``abs_path`` is package dir.
+        :rtype: bool
         """
-
         ans = False
         path = Path(abs_path)
         if path.is_dir():

@@ -1,0 +1,66 @@
+digraph G {
+subgraph "" {
+"test_simple.py";
+dependency_graph;
+"test_simple.py" -> dependency_graph;
+subgraph "" {
+dependency_graph;
+"__init__.py";
+dependency_graph -> "__init__.py";
+subgraph "" {
+"__init__.py";
+}
+
+"functions.py";
+dependency_graph -> "functions.py";
+subgraph "" {
+"functions.py";
+os;
+"functions.py" -> os;
+subgraph "" {
+os;
+}
+
+pydotplus;
+"functions.py" -> pydotplus;
+subgraph "" {
+pydotplus;
+}
+
+}
+
+"classes.py";
+dependency_graph -> "classes.py";
+subgraph "" {
+"classes.py";
+pathlib;
+"classes.py" -> pathlib;
+subgraph "" {
+pathlib;
+}
+
+re;
+"classes.py" -> re;
+subgraph "" {
+re;
+}
+
+os;
+"classes.py" -> os;
+subgraph "" {
+os;
+}
+
+typing;
+"classes.py" -> typing;
+subgraph "" {
+typing;
+}
+
+}
+
+}
+
+}
+
+}

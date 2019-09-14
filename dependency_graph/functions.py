@@ -13,9 +13,11 @@ def build(graph: Dg) -> Subgraph:
     """Generate the dependency digraph.
 
     Builds the dependency digraph recursively from the main node.
+
     :param graph: main node.
     :type graph: Dg
     :return: Dot type digraph.
+    :rtype: Dot
     """
     digraph = Subgraph()
     main_node_name = str(graph.root_filename).split(sep)[-1]
@@ -36,11 +38,11 @@ def export(digraph: Subgraph, name: str = "a") -> None:
     """Generate the dependency digraph plot.
 
     Exports the generated digraph from 'build' to 'name'.png file.
+
     :param digraph: Dot digraph from 'build'.
     :type digraph: Dot
     :param name: export file's basename.
     :type name: str
-    :return: None
     """
     graph = Dot()
     graph.add_subgraph(digraph)
